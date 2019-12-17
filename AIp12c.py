@@ -87,20 +87,71 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
+    user_id = event.source.user_id
     if event.message.id == "100001":
         return
     text = event.message.text
-    if (text=="Hi"):
-        reply_text = "Hello"
+    happy = ["可愛","喜歡","愛","乖"]
+    sad = ["討厭","拋棄","丟掉"]
+    h = 0
+    for i in happy:
+        if text.find(i) != -1:
+            if text[text.find(i)-1] != "不":
+               h = 1
+               break
+            else:
+                h = -1
+                break     
+    for i in sad:
+        if h == 1:
+            break
+        if text.find(i) != -1:
+            if text[text.find(i)-1] != "不":
+                h = -1
+                break
+            else:
+                h = 0
+                break
+    if h == 1:
+        reply_text = "^__^"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        h = 0
+    else if h == -1:
+        reply_text = "T__T"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        h = 0
+    else if (text.find("壞") != -1):
+        line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=11537, sticker_id=52002746))
+    else if (text.find("狗狗") != -1):
+        reply_text = "凹嗚～"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
         #Your user ID
-    elif(text=="你好"): 
-        reply_text = "你好啊..."
-    elif(text=="機器人"):
-        reply_text = "有！我是機器人，在！"
-    else:  # 如果非以上的選項，就會學你說話
+    else if(text.find("吃飯") != -1): 
+        reply_text = "（踏踏踏踏...）"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+    else if(text.find("散步") != -1):
+        reply_text = "汪！"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+    else if(text.find("握手") != -1):
+        reply_text = "（伸出右手）"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+    else if(text.find("左") != -1):
+        reply_text = "（伸出左手）"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+    else if(text.find("右") != -1):
+        reply_text = "（伸出右手）"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+    else: # 如果非以上的選項，就會學你說話
         reply_text = text
-    message = TextSendMessage(reply_text)
-    line_bot_api.reply_message(event.reply_token, message)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+
+    try:
+        line_bot_api.push_message(user_id, TextSendMessage(text="push測試訊息"))
+    except LineBotApiError as e:
+        # error handle
+        raise e
+    # message = TextSendMessage(reply_text)
+    # line_bot_api.reply_message(event.reply_token, message)
 
 ###=== (5.6) 執行程式  ===###
 import os
