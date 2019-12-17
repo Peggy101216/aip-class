@@ -59,7 +59,7 @@ from linebot.models import *
 ###=== (5.2) 程式宣告 ===###  
 app = Flask(__name__)  # __name__ 代表目前執行的模組
 
-###=== (5.3) LINE介面密碼 ===### (參考3.3)
+###=== (5.3) LINE介面密碼 ===### (參考3.3)t
 ##== (1) Channel Access Token
 line_bot_api = LineBotApi("p57xf84JwfwuB+hxPM442EeMedGlkobbSXrf0ktD78QkFzKJ6mUH0eneBSL/Dqcyz4MRu7rPUD+h12XfDE6jIfajTENehJ33763DftWmA/mAqizLDPvSsX49KJDCLmlBSPr+kqfk7+P55kzXO+xxXAdB04t89/1O/w1cDnyilFU=")  #-- YOUR_CHANNEL_ACCESS_TOKEN
 ##== (2) Channel Secret
