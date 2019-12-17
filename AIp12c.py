@@ -59,12 +59,11 @@ from linebot.models import *
 ###=== (5.2) 程式宣告 ===###  
 app = Flask(__name__)  # __name__ 代表目前執行的模組
 
-###=== (5.3) LINE介面密碼 ===### (參考3.3)t
+###=== (5.3) LINE介面密碼 ===### (參考3.3)
 ##== (1) Channel Access Token
-line_bot_api = LineBotApi("p57xf84JwfwuB+hxPM442EeMedGlkobbSXrf0ktD78QkFzKJ6mUH0eneBSL/Dqcyz4MRu7rPUD+h12XfDE6jIfajTENehJ33763DftWmA/mAqizLDPvSsX49KJDCLmlBSPr+kqfk7+P55kzXO+xxXAdB04t89/1O/w1cDnyilFU=")  #-- YOUR_CHANNEL_ACCESS_TOKEN
+line_bot_api = LineBotApi("oyQ62t5OR6e4dafpMXFSsgk5BNp6xhPTMWrPGdjIzK+sX0Vyk0wKky3VZJ9AZCRHz4MRu7rPUD+h12XfDE6jIfajTENehJ33763DftWmA/lYzUPRXZeq+VfudrjXZRihCsnkwuYguB0vzR8dXfZ5yQdB04t89/1O/w1cDnyilFU=")
 ##== (2) Channel Secret
-handler = WebhookHandler("5ef5de08fb83dc89e6916c1be58e207c")  #-- YOUR_CHANNEL_SECRET
-
+handler = WebhookHandler("cf426e77c3f74811ff4b6a7204f57f05")
 ###=== (5.4) 監聽來自 /callback 的 Post Request  ===###
 @app.route("/callback", methods=['POST']) 
 def callback():
@@ -87,7 +86,6 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
-    user_id = event.source.user_id
     if event.message.id == "100001":
         return
     text = event.message.text
@@ -115,17 +113,16 @@ def handle_message(event):
     if h == 1:
         reply_text = "^__^"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-        h = 0
     elif h == -1:
         reply_text = "T__T"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-        h = 0
-    elif (text.find("壞") != -1):
+    h = 0
+    if (text.find("壞") != -1):
         line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=11537, sticker_id=52002746))
     elif (text.find("狗狗") != -1):
         reply_text = "凹嗚～"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-        #Your user ID
+        # Your user ID
     elif(text.find("吃飯") != -1): 
         reply_text = "（踏踏踏踏...）"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
@@ -144,12 +141,7 @@ def handle_message(event):
     else: # 如果非以上的選項，就會學你說話
         reply_text = text
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-
-    try:
-        line_bot_api.push_message(user_id, TextSendMessage(text="push測試訊息"))
-    except LineBotApiError as e:
-        # error handle
-        raise e
+        # line_bot_api.push_message(event.push_token, StickerSendMessage(package_id=3, sticker_id=203)) 
     # message = TextSendMessage(reply_text)
     # line_bot_api.reply_message(event.reply_token, message)
 
